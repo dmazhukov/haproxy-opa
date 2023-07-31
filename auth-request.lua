@@ -187,6 +187,10 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 
 	set_var(txn, "txn.auth_response_code", response.status_code)
 	local response_ok = 200 <= response.status_code and response.status_code < 300
+	if response_ok == true then
+		local body = json.decode(response.data)
+		response_ok = body.result.allow
+	end
 
 	for header, value in response:get_headers(true) do
 		set_var(txn, "req.auth_response_header." .. sanitize_header_for_variable(header), value)
