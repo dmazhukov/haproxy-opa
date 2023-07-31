@@ -1,0 +1,7 @@
+FROM pgaertig/haproxy
+
+ADD auth-request.lua /usr/share/haproxy/auth-request.lua
+ADD http.lua /usr/share/haproxy/http.lua
+ADD json.lua /usr/local/share/lua/5.4/json.lua
+RUN chmod 644 /usr/share/haproxy/auth-request.lua
+RUN chmod 644 /usr/share/haproxy/http.lua
