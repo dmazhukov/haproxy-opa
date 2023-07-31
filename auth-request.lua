@@ -190,6 +190,7 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 	if response_ok == true then
 		local body = json.decode(response.data)
 		response_ok = body.result.allow
+		set_var(txn, "txn.opa_allow", body.result.allow)
 	end
 
 	for header, value in response:get_headers(true) do
