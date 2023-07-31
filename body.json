@@ -1,5 +1,7 @@
 {
+    "input": {
     "appid": "app1",
     "groups": ["f55e7826-883e-48d2-842e-65c7d02e8ad1"],
     "email": "user1@tkqlm.onmicrosoft.com"
+    }
 }
