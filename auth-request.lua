@@ -200,6 +200,7 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 		-- requestpath = path
 
 		print("email is ", email)
+		print("from is ", txn:get_var("from"))
 		--  .. ", requestpath is " .. requestpath .. ", path is " .. path)
 		if email ~= "user2@tkqlm.onmicrosoft.com" and string.find(requestpath, "app2") then
 			set_var(txn, "txn.auth_response_successful", false)
