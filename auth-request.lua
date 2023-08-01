@@ -141,10 +141,13 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 	if method == "*" then
 		method = txn.sf:method()
 	end
+	local body = "{\"input\": {}}" -- {appid=headers["appid"], group = headers["group"], email=headers["email"]},
+	print("headers=", headers)
+	print("body=", body)
 	local response, err = http.send(method:upper(), {
 		url = "http://" .. addr .. path,
 		headers = headers,
-		content = "{\"input\": {}}", -- {appid=headers["appid"], group = headers["group"], email=headers["email"]},
+		content = body
 		}
 	)
 
