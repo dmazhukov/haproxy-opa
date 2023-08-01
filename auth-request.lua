@@ -97,7 +97,9 @@ end
 -- * method == "*": call the auth service using the same method used by the client.
 -- * hdr_fail == "-": make the Lua script to not terminate the request.
 function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
-	set_var(txn, "txn.auth_response_successful", false)
+	set_var(txn, "txn.auth_response_successful", true)
+
+	txn:Warning("auth_request")
 
 	-- Check whether the given backend exists.
 	if core.backends[be] == nil then
@@ -141,13 +143,13 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 	if method == "*" then
 		method = txn.sf:method()
 	end
-	local body = "{\"input\": {}}" -- {appid=headers["appid"], group = headers["group"], email=headers["email"]},
+	body = "{\"input\": {}}" -- {appid=headers["appid"], group = headers["group"], email=headers["email"]},
 	print("headers=", headers)
 	print("body=", body)
 	local response, err = http.send(method:upper(), {
 		url = "http://" .. addr .. path,
 		headers = headers,
-		content = body
+		data = body
 		}
 	)
 
@@ -171,7 +173,11 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 	if response_ok == true then
 		local body = json.decode(response.data)
 		response_ok = body.result.allow
+		-- set_var(txn, "txn.opa_allow", body.result.allow)
+		
+
 		set_var(txn, "txn.opa_allow", body.result.allow)
+
 	end
 
 	for header, value in response:get_headers(true) do
@@ -184,6 +190,11 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 	-- response_ok means 2xx: allow request.
 	if response_ok then
 		set_var(txn, "txn.auth_response_successful", true)
+		local email = txn:get_var("email")
+		txn:Warning("email is ", email)
+		if email ~= "user2@tkqlm.onmicrosoft.com" then
+			set_var(txn, "txn.auth_response_successful", true)
+		end
 	-- Don't allow codes < 200 or >= 300.
 	-- Forward the response to the client if required.
 	elseif terminate_on_failure then
