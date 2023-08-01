@@ -133,10 +133,12 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 			for i, v in pairs(values) do
 				if headers[header] == nil then
 					headers[header] = v
-					print("header", headers[header])
+					print("header", i)
+					print("value", headers[header])
 				else
 					headers[header] = headers[header] .. ", " .. v
-					print("header", headers[header])
+					print("header", i)
+					print("value", headers[header])
 				end
 			end
 		end
