@@ -145,7 +145,7 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 		method = txn.sf:method()
 	end
 	body = "{\"input\": {}}" -- {appid=headers["appid"], group = headers["group"], email=headers["email"]},
-	print("headers=", headers)
+	print("headers=", tostring(headers))
 	print("body=", body)
 	local response, err = http.send(method:upper(), {
 		url = "http://" .. addr .. path,
@@ -172,7 +172,7 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 	set_var(txn, "txn.auth_response_code", response.status_code)
 	local response_ok = 200 <= response.status_code and response.status_code < 300
 	if response_ok == true then
-		local body = json.decode(response.data)
+		-- local body = json.decode(response.data)
 		-- response_ok = body.result.allow
 		-- set_var(txn, "txn.opa_allow", body.result.allow)
 		
