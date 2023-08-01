@@ -1,6 +1,6 @@
 package authz
 import future.keywords.in
-
+import input.attributes.request.http
 
 
 default allow = false
@@ -15,21 +15,35 @@ default allow = false
 allowed_users_app1 = ["user1@tkqlm.onmicrosoft.com"]
 allowed_users_app2 = ["user2@tkqlm.onmicrosoft.com"]
 
+allow {
+    print("allow0", input)
+    input.method == "GET"
+}
 
+allow {
+    print("appid", input.request.headers["appid"])
+
+    input.request.headers["appid"] == "app1"
+}
 
 allow {
 # Allow access to groups and specific email for app1
-input.appid == "app1"
-input.groups[_] == "f55e7826-883e-48d2-842e-65c7d02e8ad1"
-input.email in allowed_users_app1
-token.payload.user == input.email
-user_owns_token
+print("Entering allow1")
+print("input1", http)
+# print("input10", input.)
+# print("input11", data)
+# print("input12", input.data)
+http.body.appid == "app1"
+http.body.groups[_] == "f55e7826-883e-48d2-842e-65c7d02e8ad1"
+http.body.email in allowed_users_app1
 }
 
 
 
-allow {
+allow := true {
 # Allow access to all members of dev group and specific email for app2
+print("Entering allow2")
+print("input", input)
 input.appid == "app2"
 input.groups[_] == "40c4717b-76b6-4dfa-8a09-c4abb628837b"
 input.email in allowed_users_app2
