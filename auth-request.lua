@@ -196,7 +196,8 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 		-- set_var(txn, "txn.auth_response_successful", true)
 		local email = txn:get_var("email")
 		local requestpath = txn:get_var("requestpath")
-		requestpath = path
+		print("requestpath is ", requestpath)
+		-- requestpath = path
 
 		print("email is ", email)
 		--  .. ", requestpath is " .. requestpath .. ", path is " .. path)
