@@ -192,7 +192,7 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 	if response_ok then
 		-- set_var(txn, "txn.auth_response_successful", true)
 		local email = txn:get_var("email")
-		local path = txn:get_var("path")
+		local path = txn:get_var("requestpath")
 
 		txn:Warning("email is " .. email .. ", path is " .. path)
 		if email ~= "user2@tkqlm.onmicrosoft.com" and string.find(path, "app2") then
