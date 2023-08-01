@@ -97,7 +97,7 @@ end
 -- * method == "*": call the auth service using the same method used by the client.
 -- * hdr_fail == "-": make the Lua script to not terminate the request.
 function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
-	set_var(txn, "txn.auth_response_successful", true)
+	set_var(txn, "txn.auth_response_successful", false)
 
 	txn:Warning("auth_request")
 
