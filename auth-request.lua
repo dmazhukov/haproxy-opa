@@ -135,6 +135,7 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 					headers[header] = v
 				else
 					headers[header] = headers[header] .. ", " .. v
+					print("header", headers[header])
 				end
 			end
 		end
@@ -147,6 +148,7 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 	body = "{\"input\": {}}" -- {appid=headers["appid"], group = headers["group"], email=headers["email"]},
 	print("headers=", tostring(headers))
 	print("body=", body)
+	print("path=", path)
 	local response, err = http.send(method:upper(), {
 		url = "http://" .. addr .. path,
 		headers = headers,
@@ -195,7 +197,8 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 		local requestpath = txn:get_var("requestpath")
 		requestpath = path
 
-		txn:Warning("email is " .. email .. ", requestpath is " .. requestpath .. ", path is " .. path)
+		print("email is ", email)
+		--  .. ", requestpath is " .. requestpath .. ", path is " .. path)
 		if email ~= "user2@tkqlm.onmicrosoft.com" and string.find(requestpath, "app2") then
 			set_var(txn, "txn.auth_response_successful", false)
 		end
