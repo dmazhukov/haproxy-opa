@@ -1,5 +1,6 @@
 -- local http = require("haproxy-lua-http")
 local http = require("http")
+local json = require("json")
 
 core.register_action("auth-request", { "http-req" }, function(txn, be, path)
 	auth_request(txn, be, path, "HEAD", ".*", "-", "-")
@@ -172,11 +173,11 @@ function auth_request(txn, be, path, method, hdr_req, hdr_succeed, hdr_fail)
 	local response_ok = 200 <= response.status_code and response.status_code < 300
 	if response_ok == true then
 		local body = json.decode(response.data)
-		response_ok = body.result.allow
+		-- response_ok = body.result.allow
 		-- set_var(txn, "txn.opa_allow", body.result.allow)
 		
 
-		set_var(txn, "txn.opa_allow", body.result.allow)
+		-- set_var(txn, "txn.opa_allow", body.result.allow)
 
 	end
 
